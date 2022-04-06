@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/env bash 
+#!/data/data/com.termux/files/usr/bin/env bash
 
 # var colors
 gC="\e[0;32m\033[1m"
@@ -20,7 +20,7 @@ function ctrl_c {
 #variables
 zzz=$(sleep 0.5)
 
-# dependencies
+# dependencies for I-mapt
 if [[ ! -e `command -v ruby` && ! -e `command -v lolcat` ]];then
     echo -e "$(clear)${cC}Installing ruby and gem lolcat | confirmed\ty+enter$eC"
     yes | apt update && apt upgrade
@@ -28,24 +28,27 @@ if [[ ! -e `command -v ruby` && ! -e `command -v lolcat` ]];then
     gem install lolcat
 fi
 
+# panel de ayuda
 helpPanel(){
     echo -e "${cC}show usage I-ampt [option]$eC"
     for i in $(seq 1 80); do echo -ne "${cC}-${eC}"; done
     echo -e "\n\t${cC}-i  <option>${yC}\tInstall package tool${eC}"
     echo -e "\t${cC}-u  <option>${yC}\tUninstall package manual$eC"
-
+    
     tput cnorm; exit 0
 }
 
+# actualizar repositorios de termux
 apt_update(){
     yes|apt update && apt upgrade
 }
 
 ngrok_install(){
+    [[ -e ~/ngrok && -x ~/ngrok ]] || echo "Descargue ngrok de su pagina oficial y mueva a: ${HOME}"|lolcat && exit 1
     local dirRoot=$PREFIX/opt/root-kali
-    echo -e "Instalando ngrok + kali root" | lolcat
+    echo "kali root" | lolcat -a -d 30
     apt_update
-    pkg install proot openssl-tool wget;$zzz
+    yes|pkg install proot openssl-tool wget;$zzz
     [[ -d $dirRoot ]] || mkdir -p $dirRoot # carpeta elimited uninstall
     cd $dirRoot;wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Kali/kali.sh && hash -r
     bash kali.sh;rm kali.sh
@@ -55,11 +58,12 @@ ngrok_install(){
 }
 
 install_package(){
-   
+    
     case $@ in
         ngrok) ngrok_install;;
+        zsh) zsh_install;;
     esac
-
+    
 }
 
 uninstal_package(){
@@ -70,9 +74,9 @@ parameter_counter=0
 while getopts "i:u:h" arg; do
     case $arg in
         i)  install_package $OPTARG
-            let parameter_counter+=1;;
+        let parameter_counter+=1;;
         u)  uninstall $OPTARG
-            let parameter_counter+=1;;
+        let parameter_counter+=1;;
         h)  helpPanel;;
     esac
 done

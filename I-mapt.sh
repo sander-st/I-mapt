@@ -51,7 +51,7 @@ ngrok_install(){
     yes|pkg install proot openssl-tool wget;$zzz
     [[ -d $dirRoot ]] || mkdir -p $dirRoot # carpeta elimited uninstall
     cd $dirRoot;wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Kali/kali.sh && hash -r
-    bash kali.sh;rm kali.sh
+    bash kali.sh;rm kali.sh;mv $HOME/ngrok $dirRoot/kali-fs/root
     
     echo "ejecute ./start-kali.sh"|lolcat
     

@@ -44,7 +44,11 @@ apt_update(){
 }
 
 ngrok_install(){
-    [[ -e ~/ngrok && -x ~/ngrok ]] || echo "Descargue ngrok de su pagina oficial y mueva a: ${HOME}"|lolcat && exit 1
+    if [[ ! -e ~/ngrok && ! -x ~/ngrok ]];then
+        echo "Descargue ngrok de su pagina oficial y mueva a: ${HOME}"|lolcat
+        exit 1
+    fi
+
     local dirRoot=$PREFIX/opt/root-kali
     echo "kali root" | lolcat -a -d 30
     apt_update

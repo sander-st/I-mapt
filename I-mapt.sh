@@ -52,7 +52,7 @@ ngrok_install(){
     [[ -d $dirRoot ]] || mkdir -p $dirRoot # carpeta elimited uninstall
     cd $dirRoot;wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Kali/kali.sh && hash -r
     bash kali.sh;rm kali.sh;mv $HOME/ngrok $dirRoot/kali-fs/root
-    
+    wget https://raw.githubusercontent.com/sander-st/I-mapt/master/bin/ngrok -O $PREFIX/bin/ngrok && chmod 777 $PREFIX/bin/ngrok
     echo "ejecute ./start-kali.sh"|lolcat
     
 }

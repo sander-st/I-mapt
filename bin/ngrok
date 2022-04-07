@@ -1,0 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/env bash
+
+dir=$PREFIX/opt/root-kali
+
+[[ -e $dir/kali-fs/root/ngrok && -x $dir/kali-fs/root/ngrok ]] || echo "[e]: ngrok not found in $PREFIX/opt/kali-root/kali-fs/root/" && exit 1
+
+./$dir/start-kali.sh
+
+if [ "$(id -u)" = "0" ]; then
+    ngrok "$@"
+fi

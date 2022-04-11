@@ -56,9 +56,20 @@ ngrok_install(){
     [[ -d $dirRoot ]] || mkdir -p $dirRoot # carpeta elimited uninstall
     cd $dirRoot;wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Kali/kali.sh && hash -r
     bash kali.sh;rm kali.sh;mv $HOME/ngrok $dirRoot/kali-fs/root
-    wget https://raw.githubusercontent.com/sander-st/I-mapt/master/bin/ngrok -O $PREFIX/bin/ngrok && chmod 777 $PREFIX/bin/ngrok
-    echo "ejecute ./start-kali.sh"|lolcat
+    wget https://raw.githubusercontent.com/sander-st/I-mapt/master/bin/supersu -O $PREFIX/bin/supersu && chmod 777 $PREFIX/bin/supersu
+    #echo "ejecute ./start-kali.sh"|lolcat
     
+}
+
+nvim_install(){
+    echo "instalando neovim + sus configuracion" | lolcat
+    apt_update
+    [[ "$(command -v git)" ]] && yes|apt install git
+    yes|pkg install neovim
+    [[ ! -d ~/.config ]] && mkdir -p ~/.config
+    echo -e "\nDescargando ajustes de neovim"|lolcat -a -d 30
+    git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+    nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
 }
 
 install_package(){
@@ -66,6 +77,7 @@ install_package(){
     case $@ in
         ngrok) ngrok_install;;
         zsh) zsh_install;;
+        nvim) nvim_install;;
     esac
     
 }

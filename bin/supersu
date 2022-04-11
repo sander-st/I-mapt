@@ -1,0 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/env bash
+
+dir=$PREFIX/opt/root-kali
+
+if [[ -e $dir/kali-fs/root/start-kali.sh ]];then
+  echo "[e]: not found in $PREFIX/opt/kali-root/kali-fs/root/start-kali.sh"
+  exit 1
+fi
+
+./$dir/start-kali.sh
+

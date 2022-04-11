@@ -7,5 +7,5 @@ if [[ -e $dir/kali-fs/root/start-kali.sh ]];then
   exit 1
 fi
 
-./$dir/start-kali.sh
+bash $dir/start-kali.sh
 

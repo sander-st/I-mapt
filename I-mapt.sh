@@ -44,8 +44,9 @@ apt_update(){
 }
 
 ngrok_install(){
+    # tar zxvf ~/ngrok-stable-linux-amd64.tgz
     if [[ ! -e ~/ngrok && ! -x ~/ngrok ]];then
-        echo "Descargue ngrok de su pagina oficial y mueva a: ${HOME}"|lolcat
+        echo -e "Descargue ngrok de su pagina oficial, descomprime con:\ntar zxvf <ngrok.tgz>\ny mueva a: ${HOME}"|lolcat
         exit 1
     fi
 
@@ -55,9 +56,9 @@ ngrok_install(){
     yes|pkg install proot openssl-tool wget;$zzz
     [[ -d $dirRoot ]] || mkdir -p $dirRoot # carpeta elimited uninstall
     cd $dirRoot;wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Kali/kali.sh && hash -r
-    bash kali.sh;rm kali.sh;mv $HOME/ngrok $dirRoot/kali-fs/root
+    bash kali.sh;rm kali.sh;mv $HOME/ngrok $dirRoot/kali-fs/bin
     wget https://raw.githubusercontent.com/sander-st/I-mapt/master/bin/supersu -O $PREFIX/bin/supersu && chmod 777 $PREFIX/bin/supersu
-    #echo "ejecute ./start-kali.sh"|lolcat
+    echo -e "para ejecutar ngrok, primero ejecute:\tsupersu\nluego ejecute:\t ngrok http 5500"|lolcat -a -d 30
     
 }
 
@@ -82,8 +83,14 @@ install_package(){
     
 }
 
-uninstal_package(){
-    echo $@
+uninstall_package(){
+    case $@ in 
+        ngrok)
+            echo "Desinstalando ngrok con todos sus complementos" | lolcat -a -d 25
+            rm -rf $PREFIX/opt/root-kali && rm $PREFIX/bin/supersu
+            echo -e "${rC}Desinstalacion finalizada...$eC";$zzz
+            tput cnorm;;
+    esac
 }
 
 parameter_counter=0
@@ -91,7 +98,7 @@ while getopts "i:u:h" arg; do
     case $arg in
         i)  install_package $OPTARG
         let parameter_counter+=1;;
-        u)  uninstall $OPTARG
+        u)  uninstall_package $OPTARG
         let parameter_counter+=1;;
         h)  helpPanel;;
     esac
